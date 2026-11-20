@@ -1,9 +1,10 @@
-\documentclass[14pt, a4paper]{article}
+\documentclass[12pt, a4paper]{article}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning}
 \usepackage{listings}
 
-\usepackage{vntex}
+\usepackage[utf8]{vietnam}
+\usepackage{mathptmx}
 
 \usepackage[dvipsnames]{xcolor}
 %\usepackage[english,vietnam]{babel}
@@ -375,15 +376,25 @@ language=C++,
 
 \begin{document}
 
+\pagenumbering{alph}
 \input{cover-page}
 
-% \newpage
-% \tableofcontents
+\newpage
+\pagenumbering{roman}
+\tableofcontents
+\newpage
 
-% \include{cacsections/introduction}
-% \input{cacsections/coso}
-% \include{cacsections/tailieu}
-% \include{cacsections/phuluc}
-
+\pagenumbering{arabic}
+\input{sections/phanA}
+\newpage
+\input{sections/phanB}
+\newpage
+\input{sections/phanC}
+\newpage
+\input{sections/phanD}
+\newpage
+\input{sections/phanE}
+\newpage
+\input{sections/phanF}
 
 \end{document}

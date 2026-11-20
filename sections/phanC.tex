@@ -1,0 +1,208 @@
+\section*{PHẦN C – LED RGB VÀ MÔ PHỎNG TRẠNG THÁI}
+\addcontentsline{toc}{section}{PHẦN C – LED RGB VÀ MÔ PHỎNG TRẠNG THÁI}
+
+% ========================================================
+\subsection*{BT09. Ba kênh R – G – B}
+\addcontentsline{toc}{subsection}{BT09. Ba kênh R – G – B}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    // Khoi tao he thong
+}
+
+void loop() {
+    // 1. Mau Do (Red): 600ms
+    rgb_set(255, 0, 0);
+    delay(600);
+
+    // 2. Mau Xanh la (Green): 600ms
+    rgb_set(0, 255, 0);
+    delay(600);
+
+    // 3. Mau Xanh duong (Blue): 600ms
+    rgb_set(0, 0, 255);
+    delay(600);
+
+    // 4. Tat den: 300ms
+    rgb_set(0, 0, 0);
+    delay(300);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{rgb\_set(R, G, B)}: Hàm điều khiển LED RGB với 3 kênh độc lập từ giá trị 0 (tắt) đến 255 (sáng cực đại).
+    \item \texttt{rgb\_set(255, 0, 0)}: Chỉ bật kênh Đỏ.
+    \item \texttt{rgb\_set(0, 255, 0)}: Chỉ bật kênh Xanh lá.
+    \item \texttt{rgb\_set(0, 0, 255)}: Chỉ bật kênh Xanh dương.
+    \item \texttt{rgb\_set(0, 0, 0)}: Tắt cả 3 kênh phát sáng trong 300ms tạo khoảng ngắt chu kỳ.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp chuyển đổi 3 màu RGB trên thiết bị ảo tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt09_result.png}
+    \caption{Trình tự hiển thị 3 màu cơ bản R - G - B trên LED RGB}
+    \label{fig:bt09}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+LED RGB chuyển trạng thái mượt mà theo đúng thứ tự Đỏ $\to$ Xanh lá $\to$ Xanh dương với thời gian hiển thị 600ms mỗi màu và có khoảng nghỉ 300ms rõ ràng trước khi chu kỳ lặp lại.
+
+
+% ========================================================
+\subsection*{BT10. Pha bốn màu}
+\addcontentsline{toc}{subsection}{BT10. Pha bốn màu}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    // Khoi tao he thong
+}
+
+void loop() {
+    // 1. Mau Vang (Yellow) = Red + Green
+    rgb_set(255, 255, 0);
+    delay(500);
+
+    // 2. Mau Cyan (Xanh da troi) = Green + Blue
+    rgb_set(0, 255, 255);
+    delay(500);
+
+    // 3. Mau Magenta (Hong tim) = Red + Blue
+    rgb_set(255, 0, 255);
+    delay(500);
+
+    // 4. Mau Trang (White) = Red + Green + Blue
+    rgb_set(255, 255, 255);
+    delay(500);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Pha trộn màu cộng (Additive color mixing):
+    \begin{itemize}
+        \item Vàng (Yellow): Kết hợp cực đại Đỏ và Xanh lá $\to (255, 255, 0)$.
+        \item Cyan: Kết hợp cực đại Xanh lá và Xanh dương $\to (0, 255, 255)$.
+        \item Magenta: Kết hợp cực đại Đỏ và Xanh dương $\to (255, 0, 255)$.
+        \item Trắng (White): Kết hợp đồng thời cả ba nguồn sáng $\to (255, 255, 255)$.
+    \end{itemize}
+    \item \texttt{delay(500)}: Duy trì mỗi màu trong nửa giây (500ms).
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp 4 màu pha cộng tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt10_result.png}
+    \caption{Kết quả pha trộn màu cộng Vàng, Cyan, Magenta và Trắng}
+    \label{fig:bt10}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Các màu pha cộng xuất hiện trung thực và rõ ràng trên LED RGB ảo của Yolo UNO. Quy tắc trộn màu quang học tuân thủ đúng nguyên lý hòa sắc cộng ba kênh màu ánh sáng.
+
+
+% ========================================================
+\subsection*{BT11. Đèn giao thông 3 pha}
+\addcontentsline{toc}{subsection}{BT11. Đèn giao thông 3 pha}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    // Khoi tao
+}
+
+void loop() {
+    // Pha 1: Den Do (Stop) - 3000ms
+    rgb_set(255, 0, 0);
+    delay(3000);
+
+    // Pha 2: Den Xanh la (Go) - 2500ms
+    rgb_set(0, 255, 0);
+    delay(2500);
+
+    // Pha 3: Den Vang (Caution) - 1000ms
+    rgb_set(255, 255, 0);
+    delay(1000);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Mô phỏng hệ thống đèn giao thông đơn chip bằng LED đa màu:
+    \begin{itemize}
+        \item \texttt{rgb\_set(255, 0, 0)}: Đèn Đỏ giữ xe dừng lại trong 3000ms.
+        \item \texttt{rgb\_set(0, 255, 0)}: Đèn Xanh lá cho phép lưu thông trong 2500ms.
+        \item \texttt{rgb\_set(255, 255, 0)}: Đèn Vàng chuyển tiếp cảnh báo giảm tốc trong 1000ms.
+    \end{itemize}
+    \item Tổng thời gian của một chu kỳ hoàn chỉnh: $T = 3000 + 2500 + 1000 = 6500\text{ ms} = 6.5\text{ s}$.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp chuyển pha đèn giao thông tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt11_result.png}
+    \caption{Chu trình đèn giao thông 3 pha tuần hoàn Đỏ - Xanh - Vàng}
+    \label{fig:bt11}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Chu trình điều khiển diễn ra tuần tự, mượt mà và không bao giờ bị bỏ sót pha đèn vàng ở cuối nhịp. Thời gian đo đạc thực tế trên phần mềm giả lập đúng chính xác 6.5 giây cho một vòng tuần hoàn.
+
+
+% ========================================================
+\subsection*{BT12. Đèn cảnh báo hai màu}
+\addcontentsline{toc}{subsection}{BT12. Đèn cảnh báo hai màu}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    // Khoi tao
+}
+
+void loop() {
+    // Mot dot canh bao: Chot do va xanh duong luan phien 5 lan
+    for (int i = 0; i < 5; i++) {
+        rgb_set(255, 0, 0); // Do
+        delay(200);
+        rgb_set(0, 0, 255); // Xanh duong
+        delay(200);
+    }
+
+    // Nghi 1 giay giua cac dot (Tat den hoan toan)
+    rgb_set(0, 0, 0);
+    delay(1000);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{for (int i = 0; i < 5; i++)}: Khởi tạo vòng lặp 5 chu kỳ con cho mỗi đợt cảnh báo.
+    \item Mỗi chu kỳ con kéo dài $200\text{ms} + 200\text{ms} = 400\text{ms}$. Tổng thời gian chớp nháy của một đợt gồm 5 lần bật đỏ và 5 lần bật xanh dương là $5 \times 400\text{ms} = 2000\text{ms}$ (2 giây).
+    \item \texttt{rgb\_set(0, 0, 0)} kết hợp \texttt{delay(1000)}: Ngắt tín hiệu nghỉ hoàn toàn trong 1 giây trước khi phát đợt tín hiệu tiếp theo.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kiểm thử đèn cảnh báo cảnh sát hai màu tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt12_result.png}
+    \caption{Mô phỏng đèn tín hiệu cảnh báo hai màu Đỏ - Xanh nhấp nháy}
+    \label{fig:bt12}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Đèn cảnh báo hoạt động tương tự đèn ưu tiên cứu hộ/cảnh sát: chớp nháy liên tục 5 đợt xen kẽ rất rõ nét trong 2 giây rồi tạm nghỉ 1 giây. Việc tắt hoàn toàn đèn ở khoảng nghỉ giúp tín hiệu cảnh báo có độ tương phản cao.

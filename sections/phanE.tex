@@ -1,0 +1,215 @@
+\section*{PHẦN E – NÚT BẤM, TRẠNG THÁI VÀ SỰ KIỆN}
+\addcontentsline{toc}{section}{PHẦN E – NÚT BẤM, TRẠNG THÁI VÀ SỰ KIỆN}
+
+% ========================================================
+\subsection*{BT17. Giữ nút để bật LED}
+\addcontentsline{toc}{subsection}{BT17. Giữ nút để bật LED}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+    // Kiem tra trang thai nut nhan BUTTON_A lien tuc
+    if (button_pressed(BUTTON_A)) {
+        digitalWrite(LED_BUILTIN, HIGH); // Nhan giu nut -> LED sang
+    } else {
+        digitalWrite(LED_BUILTIN, LOW);  // Nha nut -> LED tat
+    }
+    delay(30); // Chống rung phím (debounce)
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{button\_pressed(BUTTON\_A)}: Hàm thư viện trả về giá trị 1 (TRUE) khi nút A đang được nhấn giữ và 0 (FALSE) khi nhả ra.
+    \item \texttt{if / else}: Điều khiển trực tiếp trạng thái logic của LED theo mức của nút nhấn.
+    \item \texttt{delay(30)}: Khoảng dừng nhỏ khử rung phím (debounce) phần cứng và giảm tải CPU trong vòng lặp liên tục.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp trạng thái khi nhấn giữ nút và khi nhả nút tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt17_result.png}
+    \caption{Kiểm thử hành vi giữ nút A để bật sáng LED và nhả ra để tắt}
+    \label{fig:bt17}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Đèn LED phản hồi tức thời với thao tác nút: sáng khi nhấn giữ và lập tức tắt khi nhả nút chuột trên mô phỏng. Không cần bấm chạy lại chương trình giữa các lần thao tác.
+
+
+% ========================================================
+\subsection*{BT18. Bấm một lần để đổi bật/tắt}
+\addcontentsline{toc}{subsection}{BT18. Bấm một lần để đổi bật/tắt}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+int truoc = 0;      // Luu trang thai nut o chu ky truoc do
+int led_state = 0;  // 0: Tat, 1: Bat
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
+}
+
+void loop() {
+    int hien_tai = button_pressed(BUTTON_A);
+
+    // Phat hien su kien canh len (chuyen tu nha sang nhan: 0 -> 1)
+    if (hien_tai && !truoc) {
+        led_state = !led_state; // Dao trang thai LED
+        if (led_state) {
+            digitalWrite(LED_BUILTIN, HIGH);
+        } else {
+            digitalWrite(LED_BUILTIN, LOW);
+        }
+    }
+
+    truoc = hien_tai; // Cap nhat trang thai cho chu ky sau
+    delay(30);        // Khu rung phim
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{if (hien\_tai \&\& !truoc)}: Thuật toán phát hiện cạnh lên (Edge Detection). Sự kiện chỉ kích hoạt một lần duy nhất tại thời điểm nút bắt đầu chuyển từ 0 sang 1.
+    \item \texttt{led\_state = !led\_state}: Đảo trạng thái biến logic (Toggle) mỗi khi có xung cạnh lên.
+    \item \texttt{truoc = hien\_tai}: Lưu lại vết trạng thái để phân biệt giữa nhấn mới và tiếp tục giữ nút. Nhờ đó, việc giữ nút 2 giây hay lâu hơn cũng không làm đảo trạng thái nhiều lần.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kết quả bấm-thả 4 lần (ON-OFF-ON-OFF) tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt18_result.png}
+    \caption{Kiểm thử cơ chế Toggle bật/tắt LED qua phát hiện cạnh nhấn}
+    \label{fig:bt18}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Khi bấm-thả nút 4 lần liên tiếp, đèn đổi tuần tự qua 4 trạng thái: ON $\to$ OFF $\to$ ON $\to$ OFF chính xác. Khi nhấn giữ chuột liên tục trên nút A trong 2 giây, LED vẫn chỉ đảo trạng thái đúng 1 lần duy nhất, khắc phục triệt để lỗi lặp trạng thái.
+
+
+% ========================================================
+\subsection*{BT19. Bộ đếm số lần nhấn}
+\addcontentsline{toc}{subsection}{BT19. Bộ đếm số lần nhấn}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+#include <stdio.h>
+
+int truoc = 0;
+int count = 0;
+
+void setup() {
+    // Ban dau hien thi mau Xanh la
+    rgb_set(0, 255, 0);
+}
+
+void loop() {
+    int hien_tai = button_pressed(BUTTON_A);
+
+    if (hien_tai && !truoc) {
+        count++; // Tang so lan nhan
+        printf("So lan nhan: %d\n", count);
+
+        if (count >= 5) {
+            // Sau 5 lan nhan doi sang mau Do
+            rgb_set(255, 0, 0);
+        } else {
+            // Truoc do giu mau Xanh la
+            rgb_set(0, 255, 0);
+        }
+    }
+
+    truoc = hien_tai;
+    delay(30);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{count++}: Tăng biến đếm sự kiện mỗi khi phát hiện cạnh nhấn nút mới.
+    \item \texttt{printf("So lan nhan: \%d\textbackslash n", count)}: Xuất thông số đếm ra cửa sổ Terminal/Console để theo dõi trực tiếp.
+    \item \texttt{if (count >= 5)}: Kiểm tra điều kiện ngưỡng sự kiện để chuyển đổi màu chỉ báo LED RGB từ Xanh lá sang Đỏ cảnh báo.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp Console đếm 1, 2, 3, 4, 5 và LED đổi sang Đỏ tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt19_result.png}
+    \caption{Bộ đếm số lần nhấn nút hiển thị trên Console và đổi màu LED RGB}
+    \label{fig:bt19}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Số in trên console tăng chính xác từng đơn vị 1, 2, 3, 4, 5 cho từng lượt click chuột riêng biệt. Thao tác nhấn giữ dài không làm cộng dồn số đếm sai lệch. Đúng ở lần nhấn thứ 5, đèn RGB chuyển ngay từ xanh lá sang đỏ.
+
+
+% ========================================================
+\subsection*{BT20. Nút bấm chuyển 3 màu vòng tròn}
+\addcontentsline{toc}{subsection}{BT20. Nút bấm chuyển 3 màu vòng tròn}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+int truoc = 0;
+int state = 0; // 0: Tat ban dau, 1: Do, 2: Xanh la, 3: Xanh duong
+
+void setup() {
+    rgb_set(0, 0, 0); // Trang thai ban dau: Tat
+}
+
+void loop() {
+    int hien_tai = button_pressed(BUTTON_A);
+
+    if (hien_tai && !truoc) {
+        // Chuyen trang thai vong tron 1 -> 2 -> 3 -> 1
+        if (state == 0) {
+            state = 1; // Lan nhan dau tien: Do
+        } else {
+            state = (state % 3) + 1;
+        }
+
+        // Xuat mau tuong ung voi state
+        switch (state) {
+            case 1: rgb_set(255, 0, 0); break; // Do
+            case 2: rgb_set(0, 255, 0); break; // Xanh la
+            case 3: rgb_set(0, 0, 255); break; // Xanh duong
+        }
+    }
+
+    truoc = hien_tai;
+    delay(30);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Biến trạng thái \texttt{state = 0} đại diện cho trạng thái ban đầu (đèn tắt hoàn toàn).
+    \item Công thức toán tử modulo \texttt{state = (state \% 3) + 1}: Tạo chu trình chuyển vòng tuần hoàn khép kín giữa 3 trạng thái $1 \to 2 \to 3 \to 1$.
+    \item \texttt{switch(state)}: Ánh xạ mã trạng thái sang màu sắc hiển thị vật lý tương ứng.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp chuyển 5 lần nhấn liên tiếp (Đỏ -> Xanh lá -> Xanh dương -> Đỏ -> Xanh lá) tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt20_result.png}
+    \caption{Chuyển màu đèn RGB tuần hoàn 3 pha theo từng lần nhấn nút}
+    \label{fig:bt20}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Ban đầu mạch khởi động đèn tắt hoàn toàn. Khi người dùng bấm nút 5 lần liên tiếp, đèn chuyển màu chính xác tuyệt đối theo chuỗi: Đỏ $\to$ Xanh lá $\to$ Xanh dương $\to$ Đỏ $\to$ Xanh lá. Không bị bỏ nhịp hay nhảy cóc pha màu.

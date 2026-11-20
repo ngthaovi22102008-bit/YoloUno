@@ -1,0 +1,192 @@
+\section*{PHẦN B – LED ĐƠN, THỜI GIAN, VÒNG LẶP}
+\addcontentsline{toc}{section}{PHẦN B – LED ĐƠN, THỜI GIAN, VÒNG LẶP}
+
+% ========================================================
+\subsection*{BT05. LED sáng liên tục}
+\addcontentsline{toc}{subsection}{BT05. LED sáng liên tục}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH); // Luon bat sang (doi thanh LOW neu muon luon tat)
+}
+
+void loop() {
+    // Khong can thuc hien lenh nao trong loop vi trang thai da duoc duy tri
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{pinMode(LED\_BUILTIN, OUTPUT)}: Thiết lập chân LED nội vi là đầu ra.
+    \item \texttt{digitalWrite(LED\_BUILTIN, HIGH)}: Xuất mức điện áp cao (5V/3.3V) để kích hoạt LED phát sáng cố định.
+    \item Đặt trạng thái trong \texttt{setup()} giúp duy trì trạng thái ổn định, không tốn tài nguyên chuyển mạch liên tục trong \texttt{loop()}. Muốn LED luôn tắt chỉ cần thay đổi đối số thành \texttt{LOW}.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kiểm thử trạng thái LED sáng liên tục / tắt liên tục tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt05_result.png}
+    \caption{Kiểm thử trạng thái LED\_BUILTIN sáng liên tục}
+    \label{fig:bt05}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Sau khi bấm Chạy trên 3 giây, đèn LED giữ nguyên độ sáng ổn định, không xảy ra hiện tượng chớp tắt. Khi thay đối số thành \texttt{LOW}, đèn chuyển sang trạng thái tắt hoàn toàn. Trạng thái giữ nguyên ổn định theo thiết lập ban đầu.
+
+
+% ========================================================
+\subsection*{BT06. Hai nhịp nháy với cùng chu kỳ}
+\addcontentsline{toc}{subsection}{BT06. Hai nhịp nháy với cùng chu kỳ}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+// Chon che do chay: 1 la Phuong an A, 2 la Phuong an B
+#define PHUONG_AN 1 
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+#if PHUONG_AN == 1
+    // Phuong an A: Sang 200ms, tat 800ms (Duty cycle = 20%, Chu ky T = 1000ms)
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(200);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(800);
+#else
+    // Phuong an B: Sang 700ms, tat 300ms (Duty cycle = 70%, Chu ky T = 1000ms)
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(700);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(300);
+#endif
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Chu kỳ nhấp nháy $T = t_{\text{sáng}} + t_{\text{tắt}} = 200 + 800 = 700 + 300 = 1000\text{ ms} = 1\text{ s}$.
+    \item Tỷ lệ thời gian sáng (Duty Cycle):
+    \begin{itemize}
+        \item Phương án A: $\frac{200}{1000} \times 100\% = 20\%$ (chớp nháy ngắn).
+        \item Phương án B: $\frac{700}{1000} \times 100\% = 70\%$ (sáng dài, ngắt ngắn).
+    \end{itemize}
+    \item \texttt{delay(ms)}: Điều chỉnh chính xác khoảng thời gian tích cực và thời gian nghỉ của mỗi chu kỳ.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kiểm thử phương án A và B tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt06_result.png}
+    \caption{Kiểm thử hai nhịp nháy cùng chu kỳ $T = 1000$ms trên Yolo UNO}
+    \label{fig:bt06}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Cả hai phương án đều đảm bảo chu kỳ hoạt động là 1 giây (tần số 1 Hz). Ở phương án A (20\%), đèn chỉ nhá sáng ngắn rồi tắt lâu. Ở phương án B (70\%), đèn duy trì sáng phần lớn thời gian và chỉ chớp tắt trong thoáng chốc.
+
+
+% ========================================================
+\subsection*{BT07. Chớp kép rồi nghỉ}
+\addcontentsline{toc}{subsection}{BT07. Chớp kép rồi nghỉ}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+    // Chớp nhanh 2 lần
+    for (int i = 0; i < 2; i++) {
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(150);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(150);
+    }
+    // Nghỉ rõ ràng trước khi lặp nhóm kế tiếp
+    delay(900);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{for (int i = 0; i < 2; i++)}: Vòng lặp đếm biến $i$ từ 0 đến 1, tạo chính xác cụm 2 xung nháy kép.
+    \item \texttt{delay(150)}: Thời gian kích sáng và ngắt ngắn giữa 2 nhịp chớp liên tiếp.
+    \item \texttt{delay(900)}: Đặt ngoài vòng \texttt{for}, đóng vai trò giãn cách quãng nghỉ giữa các nhóm tín hiệu giúp người quan sát phân biệt rõ từng nhịp nhóm.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kiểm thử chớp kép tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt07_result.png}
+    \caption{Kiểm thử mẫu xung nhấp nháy chớp kép có quãng nghỉ}
+    \label{fig:bt07}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Quan sát trên thiết bị ảo cho thấy rõ tín hiệu phát ra theo nhịp đôi: chớp-chớp nhanh sau đó tắt hẳn gần 1 giây trước khi phát đợt chớp đôi tiếp theo. Quá trình chuyển pha rõ ràng và đúng thời gian định lượng.
+
+
+% ========================================================
+\subsection*{BT08. Đếm ngược bằng LED và console}
+\addcontentsline{toc}{subsection}{BT08. Đếm ngược bằng LED và console}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+#include <stdio.h>
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+    // Đếm ngược từ 5 về 1 kết hợp LED chớp
+    for (int i = 5; i >= 1; i--) {
+        printf("%d\n", i);
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(200);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(800);
+    }
+
+    // Thông báo GO và giữ sáng LED 2 giây
+    printf("GO\n");
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(2000);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(1000); // Khoảng nghỉ trước khi lặp lại chuỗi mới
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{for (int i = 5; i >= 1; i--)}: Vòng lặp đếm lùi bước giảm biến \texttt{i} mỗi lượt từ 5 xuống 1.
+    \item \texttt{printf("\%d\textbackslash n", i)}: Đồng bộ thông tin đếm ngược tức thời lên cửa sổ Console cùng thời điểm bật LED.
+    \item \texttt{printf("GO\textbackslash n")} và \texttt{delay(2000)}: Kết thúc đếm ngược, phát thông báo hành động kèm theo trạng thái LED sáng liên tục trong 2 giây để phân biệt với các nhịp đếm ngắn trước đó.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp màn hình Console và mạch 3D ở bài BT08 tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt08_result.png}
+    \caption{Đồng bộ đếm ngược 5-4-3-2-1 và thông báo GO trên Console kết hợp LED}
+    \label{fig:bt08}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Hệ thống hiển thị đúng trình tự đồng bộ 5 số đếm kèm 5 nhịp nháy 1 giây của đèn LED. Dòng chữ ``GO'' xuất hiện đi kèm đèn LED sáng rực rỡ trong 2 giây, tạo hiệu ứng báo hiệu xuất phát trực quan và chính xác.

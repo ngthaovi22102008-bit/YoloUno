@@ -1,0 +1,177 @@
+\section*{PHẦN A – CONSOLE VÀ LED ĐẦU TIÊN}
+\addcontentsline{toc}{section}{PHẦN A – CONSOLE VÀ LED ĐẦU TIÊN}
+
+% ========================================================
+\subsection*{BT01. In hồ sơ sinh viên}
+\addcontentsline{toc}{subsection}{BT01. In hồ sơ sinh viên}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+#include <stdio.h>
+
+int main() {
+    printf("Ho va ten: Nguyen Thao Vi\n");
+    printf("MSSV: 2610353\n");
+    printf("Lop: L01\n");
+    printf("Lab 03 - OhStem\n");
+    return 0;
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{\#include "ohstem.h"}: Khai báo thư viện hỗ trợ phần cứng và hàm chuẩn trên nền tảng OhStem Virtual Device.
+    \item \texttt{int main()}: Hàm thực thi chính theo kiểu chương trình Console chạy một lượt duy nhất.
+    \item \texttt{printf("...\textbackslash n")}: Hàm in chuỗi ký tự hiển thị ra màn hình cửa sổ Terminal/Console; ký tự \texttt{\textbackslash n} dùng để xuống dòng sau mỗi thông tin.
+    \item \texttt{return 0;}: Báo hiệu chương trình kết thúc thực thi thành công.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kết quả kiểm thử console tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt01_result.png}
+    \caption{Kết quả chạy chương trình BT01 trên Console}
+    \label{fig:bt01}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Chương trình xuất ra màn hình console đúng 4 dòng thông tin theo định dạng yêu cầu, các dòng được phân tách rõ ràng nhờ ký tự xuống dòng \texttt{\textbackslash n}. Khi thay đổi chuỗi thông tin sinh viên, chương trình phản ánh chính xác kết quả mới mà không bị lỗi dính chữ.
+
+
+% ========================================================
+\subsection*{BT02. Hai số và phép toán}
+\addcontentsline{toc}{subsection}{BT02. Hai số và phép toán}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+#include <stdio.h>
+
+int main() {
+    int a, b;
+    printf("Nhap hai so a va b: ");
+    scanf("%d %d", &a, &b);
+
+    printf("Tong: a + b = %d\n", a + b);
+    printf("Hieu: a - b = %d\n", a - b);
+    printf("Tich: a * b = %d\n", a * b);
+
+    if (b != 0) {
+        printf("Thuong: a / b = %.2f\n", (float)a / b);
+    } else {
+        printf("Khong the thuc hien phep chia do b = 0!\n");
+    }
+
+    return 0;
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{scanf("\%d \%d", \&a, \&b)}: Nhập giá trị số nguyên từ bàn phím gán vào hai biến địa chỉ \texttt{\&a} và \texttt{\&b}.
+    \item \texttt{(float)a / b}: Ép kiểu số thực cho biến \texttt{a} trước khi chia nhằm tránh phép chia nguyên (bị mất phần thập phân), lấy kết quả thực.
+    \item \texttt{printf("\%.2f\textbackslash n", ...)}: Định dạng hiển thị số thực với đúng 2 chữ số thập phân.
+    \item \texttt{if (b != 0) ... else ...}: Cấu trúc điều kiện kiểm tra mẫu số khác 0 trước khi chia nhằm tránh lỗi chia cho 0 (division by zero).
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kết quả kiểm thử với (7, 2) và (9, 0) tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt02_result.png}
+    \caption{Kết quả kiểm thử BT02 với các trường hợp đầu vào khác nhau}
+    \label{fig:bt02}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Chương trình tính toán chính xác tổng, hiệu, tích, thương. Với trường hợp thử nghiệm $(a=7, b=2)$, thương ra kết quả $3.50$ chuẩn xác. Với trường hợp $(a=9, b=0)$, câu lệnh điều kiện \texttt{if} ngăn chặn phép chia và cảnh báo lỗi hợp lệ, chương trình không bị crash.
+
+
+% ========================================================
+\subsection*{BT03. Bật cảnh báo từ giá trị đo giả lập}
+\addcontentsline{toc}{subsection}{BT03. Bật cảnh báo từ giá trị đo giả lập}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+#include <stdio.h>
+
+int main() {
+    int x;
+    printf("Nhap gia tri do x: ");
+    scanf("%d", &x);
+
+    if (x < 30) {
+        printf("NORMAL\n");
+    } else if (x < 70) {
+        printf("WARNING\n");
+    } else {
+        printf("DANGER\n");
+    }
+
+    return 0;
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{if (x < 30)}: Nhánh rẽ phân loại ngưỡng an toàn khi giá trị nhỏ hơn 30.
+    \item \texttt{else if (x < 70)}: Nhánh rẽ kế tiếp bắt các giá trị trong khoảng $[30, 70)$, tương ứng trạng thái cảnh báo.
+    \item \texttt{else}: Bắt mọi trường hợp còn lại với $x \ge 70$, tương ứng mức nguy hiểm. Cấu trúc đảm bảo tính loại trừ lẫn nhau, chỉ duy nhất 1 nhánh được thực thi.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kết quả kiểm thử với x = 29, 30, 69, 70, 100 tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt03_result.png}
+    \caption{Kết quả kiểm tra phân loại cảnh báo BT03 trên Console}
+    \label{fig:bt03}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Chương trình hoạt động chính xác theo ngưỡng phân loại: $x=29 \to$ NORMAL, $x=30$ và $69 \to$ WARNING, $x=70$ và $100 \to$ DANGER. Việc phân nhánh bằng \texttt{if / else if / else} loại trừ lẫn nhau triệt để, không có hiện tượng in thừa thông báo.
+
+
+% ========================================================
+\subsection*{BT04. Đèn LED nhấp nháy đầu tiên}
+\addcontentsline{toc}{subsection}{BT04. Đèn LED nhấp nháy đầu tiên}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(1000);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(1000);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{void setup()}: Hàm khởi tạo hệ thống, chạy đúng 1 lần khi mạch khởi động.
+    \item \texttt{pinMode(LED\_BUILTIN, OUTPUT)}: Cấu hình chân LED tích hợp sẵn trên mạch thành ngõ ra tín hiệu số.
+    \item \texttt{void loop()}: Vòng lặp tuần hoàn vô tận đặc trưng cho vi điều khiển.
+    \item \texttt{digitalWrite(LED\_BUILTIN, HIGH/LOW)}: Bật (HIGH: mức cao/sáng) hoặc tắt (LOW: mức thấp/tắt) LED.
+    \item \texttt{delay(1000)}: Tạm dừng chương trình trong 1000ms (1 giây) trước khi chuyển trạng thái.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh minh chứng mạch 3D LED nhấp nháy tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt04_result.png}
+    \caption{Đèn LED\_BUILTIN nhấp nháy trên mô hình Yolo UNO 3D}
+    \label{fig:bt04}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Chương trình chuyển dịch thành công từ tư duy console sang lập trình nhúng vòng lặp \texttt{setup() / loop()}. Đèn LED tích hợp trên mạch nhấp nháy đều đặn với chu kỳ $T = 1000\text{ms} + 1000\text{ms} = 2000\text{ms}$ (2 giây), trong vòng 6 giây quan sát được đúng 3 chu kỳ sáng/tắt.

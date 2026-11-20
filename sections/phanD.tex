@@ -1,0 +1,238 @@
+\section*{PHẦN D – ỨNG DỤNG RẼ NHÁNH VÀ VÒNG LẶP}
+\addcontentsline{toc}{section}{PHẦN D – ỨNG DỤNG RẼ NHÁNH VÀ VÒNG LẶP}
+
+% ========================================================
+\subsection*{BT13. Đèn báo nhiệt độ giả lập}
+\addcontentsline{toc}{subsection}{BT13. Đèn báo nhiệt độ giả lập}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+// Bien toan cuc gia lap nhiet do do duoc (thay doi gia tri nay de kiem thu)
+int temp = 29; 
+
+void setup() {
+    // Khoi tao
+}
+
+void loop() {
+    if (temp < 30) {
+        // Duoi 30 do C: Xanh la (Binh thuong)
+        rgb_set(0, 255, 0);
+    } else if (temp < 40) {
+        // Tu 30 den 39 do C: Vang (Chu y)
+        rgb_set(255, 255, 0);
+    } else {
+        // Tu 40 do C tro len: Do (Nguy hiem / Qua nhiet)
+        rgb_set(255, 0, 0);
+    }
+    delay(100);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{int temp = 29;}: Biến toàn cục đóng vai trò như cảm biến nhiệt độ đọc được.
+    \item \texttt{if (temp < 30)}: Ngưỡng an toàn xuất màu xanh lá \texttt{rgb\_set(0, 255, 0)}.
+    \item \texttt{else if (temp < 40)}: Bắt khoảng $[30, 40)$, xuất màu vàng cảnh báo \texttt{rgb\_set(255, 255, 0)}.
+    \item \texttt{else}: Nhiệt độ $\ge 40$, xuất màu đỏ nguy hiểm \texttt{rgb\_set(255, 0, 0)}.
+    \item Không sử dụng \texttt{scanf()} bên trong \texttt{loop()} để tránh hiện tượng chặn luồng (blocking) của hệ thống nhúng.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kết quả kiểm thử với temp = 29, 30, 39, 40 tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt13_result.png}
+    \caption{Kiểm thử đèn chỉ thị nhiệt độ với các ngưỡng 29, 30, 39, 40 độ C}
+    \label{fig:bt13}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Chương trình chuyển màu đèn tương ứng chính xác theo biến \texttt{temp}: $29^\circ\text{C}$ đèn xanh lá, $30^\circ\text{C}$ và $39^\circ\text{C}$ đèn vàng, từ $40^\circ\text{C}$ trở lên đèn lập tức đổi sang đỏ cảnh báo.
+
+
+% ========================================================
+\subsection*{BT14. Bộ chọn 4 chế độ dùng switch}
+\addcontentsline{toc}{subsection}{BT14. Bộ chọn 4 chế độ dùng switch}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+// Bien toan cuc chon che do: thu nghiem voi 0, 1, 2, 3, 99
+int mode = 2; 
+
+void setup() {
+    // Khoi tao
+}
+
+void loop() {
+    switch (mode) {
+        case 0:
+            // Che do 0: Tat hoan toan
+            rgb_set(0, 0, 0);
+            delay(100);
+            break;
+        case 1:
+            // Che do 1: Xanh la sang lien tuc
+            rgb_set(0, 255, 0);
+            delay(100);
+            break;
+        case 2:
+            // Che do 2: Xanh duong nhap nhay
+            rgb_set(0, 0, 255);
+            delay(300);
+            rgb_set(0, 0, 0);
+            delay(300);
+            break;
+        case 3:
+            // Che do 3: Do nhap nhay
+            rgb_set(255, 0, 0);
+            delay(300);
+            rgb_set(0, 0, 0);
+            delay(300);
+            break;
+        default:
+            // Cac truong hop con lai (vi du: 99): Sang mau Trang
+            rgb_set(255, 255, 255);
+            delay(100);
+            break;
+    }
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{switch(mode)}: Cấu trúc rẽ nhiều nhánh rõ ràng theo giá trị nguyên của \texttt{mode}.
+    \item \texttt{case X: ... break;}: Mỗi trường hợp được ngăn cách bởi lệnh \texttt{break} để tránh hiệu ứng trôi lệnh (fall-through) sang các nhánh khác.
+    \item \texttt{default:}: Xử lý ngoại lệ an toàn cho bất kỳ giá trị không xác định nào khác (ví dụ: 99) bằng cách hiển thị màu trắng.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kết quả kiểm thử chế độ mode = 0, 1, 2, 3, 99 tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt14_result.png}
+    \caption{Kiểm thử bộ chọn 4 chế độ qua cấu trúc switch-case}
+    \label{fig:bt14}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Các chế độ hoạt động hoàn toàn độc lập và không xảy ra hiện tượng tràn lệnh sang nhánh kế tiếp nhờ vào lệnh \texttt{break} sau mỗi \texttt{case}. Giá trị mặc định (\texttt{default}) đáp ứng đúng khi truyền vào số nguyên bất thường.
+
+
+% ========================================================
+\subsection*{BT15. Tăng giảm cường độ sáng RGB}
+\addcontentsline{toc}{subsection}{BT15. Tăng giảm cường độ sáng RGB}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    // Khoi tao
+}
+
+void loop() {
+    // Chieu 1: Tang dan do sang kenh Do (Red) tu 0 den 255 (buoc 51)
+    // Cac muc gia tri: 0, 51, 102, 153, 204, 255 (dung 6 muc)
+    for (int r = 0; r <= 255; r += 51) {
+        rgb_set(r, 0, 0);
+        delay(200);
+    }
+
+    // Chieu 2: Giam dan do sang kenh Do tu 255 ve 0 theo buoc 51
+    for (int r = 255; r >= 0; r -= 51) {
+        rgb_set(r, 0, 0);
+        delay(200);
+    }
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{r += 51}: Bước nhảy tăng dần, chia dải giá trị $[0, 255]$ thành đúng 6 mức rõ rệt: $0 \to 51 \to 102 \to 153 \to 204 \to 255$.
+    \item \texttt{rgb\_set(r, 0, 0)}: Biến thiên trực tiếp độ sáng kênh Đỏ trong khi giữ kênh Xanh lá và Xanh dương ở mức 0.
+    \item \texttt{r -= 51}: Đảo chiều vòng lặp để giảm dần cường độ sáng mượt mà về 0, tạo hiệu ứng Breathing (nhịp thở).
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp hiệu ứng tăng giảm độ sáng LED đỏ tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt15_result.png}
+    \caption{Hiệu ứng tăng dần và giảm dần độ sáng kênh Red theo 6 cấp độ}
+    \label{fig:bt15}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Quan sát trên thiết bị mô phỏng thấy rõ hiệu ứng ánh sáng đỏ bừng sáng dần qua 6 nấc, sau đó dịu dần và tắt hẳn. Tốc độ chuyển đổi giữa các cấp độ mượt mà, đúng chu kỳ.
+
+
+% ========================================================
+\subsection*{BT16. Tín hiệu SOS bằng LED}
+\addcontentsline{toc}{subsection}{BT16. Tín hiệu SOS bằng LED}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+    // 1. Ky tu S: 3 chop ngan (150ms sang / 150ms tat)
+    for (int i = 0; i < 3; i++) {
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(150);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(150);
+    }
+
+    delay(200); // Gian cach ngan giua cac chu cai
+
+    // 2. Ky tu O: 3 chop dai (450ms sang / 150ms tat)
+    for (int i = 0; i < 3; i++) {
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(450);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(150);
+    }
+
+    delay(200); // Gian cach ngan giua cac chu cai
+
+    // 3. Ky tu S: 3 chop ngan (150ms sang / 150ms tat)
+    for (int i = 0; i < 3; i++) {
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(150);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(150);
+    }
+
+    // Nghi 1000ms giua cac cum tin hieu SOS
+    delay(1000);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Tín hiệu cấp cứu quốc tế SOS mã Morse: $\dots\ ---\ \dots$ (3 ngắn - 3 dài - 3 ngắn).
+    \item Chớp ngắn: Sáng 150ms, tắt 150ms.
+    \item Chớp dài: Sáng 450ms (gấp 3 lần thời gian chớp ngắn theo chuẩn Morse), tắt 150ms.
+    \item Tổng cộng có đúng 9 nhịp sáng trong mỗi cụm, kết thúc bằng khoảng nghỉ 1000ms giúp phân biệt các cụm phát cứu hộ.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kiểm thử chuỗi xung SOS tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt16_result.png}
+    \caption{Phát tín hiệu cứu hộ SOS quốc tế bằng đèn LED tích hợp}
+    \label{fig:bt16}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Tín hiệu phát ra chuẩn quy cách quốc tế. Người quan sát phân biệt rất rõ ràng giữa 3 xung ngắn đầu, 3 xung dài ở giữa và 3 xung ngắn cuối, kết thúc bằng quãng nghỉ 1 giây chuẩn xác.

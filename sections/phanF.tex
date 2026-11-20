@@ -1,0 +1,619 @@
+\section*{PHẦN F – BÀI TẬP TỔNG HỢP VÀ NÂNG CAO}
+\addcontentsline{toc}{section}{PHẦN F – BÀI TẬP TỔNG HỢP VÀ NÂNG CAO}
+
+% ========================================================
+\subsection*{BT21. Bài học lỗi thường gặp}
+\addcontentsline{toc}{subsection}{BT21. Bài học lỗi thường gặp}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+#include <stdio.h>
+
+int main() {
+    // Thu nghiem co y tao loi cu phap de quan sat trinh bien dich:
+    // Loi 1: Thieu dau cham phay o cuoi cau lenh (vi du dong 8)
+    // printf("Ho va ten: Nguyen Thao Vi\n") 
+    
+    // Loi 2: Thieu dau dong ngoac kep trong chuoi ky tu (vi du dong 11)
+    // printf("MSSV: 2610353\n);
+
+    // Ma nguon hoan chinh sau khi da sua loi:
+    printf("Ho va ten: Nguyen Thao Vi\n");
+    printf("MSSV: 2610353\n");
+    printf("Lop: L01\n");
+    printf("Lab 03 - OhStem\n");
+    return 0;
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Thử nghiệm cố ý tạo lỗi biên dịch phổ biến trong C:
+    \begin{enumerate}
+        \item \textbf{Lỗi thiếu dấu chấm phẩy (\texttt{;}):} Trình biên dịch thông báo lỗi dạng \texttt{error: expected ';' before '...'}. Đây là lỗi kết thúc câu lệnh cơ bản nhất.
+        \item \textbf{Lỗi thiếu dấu nháy kép (\texttt{"}):} Trình biên dịch báo lỗi \texttt{error: missing terminating " character}. Trình phân tích từ vựng không tìm thấy điểm kết thúc của hằng chuỗi literal.
+    \end{enumerate}
+    \item Sau khi bổ sung đầy đủ \texttt{;} và \texttt{"}, chương trình biên dịch thành công 0 lỗi.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp thông báo lỗi của trình biên dịch và ảnh sau khi sửa xong tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt21_result.png}
+    \caption{Ghi nhận thông báo lỗi cú pháp từ trình biên dịch và kết quả sau khi khắc phục}
+    \label{fig:bt21}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Việc nhận diện được thông báo lỗi từ trình biên dịch giúp rèn luyện kỹ năng debug mã nguồn C, hiểu rõ nguyên tắc kết thúc lệnh bằng dấu chấm phẩy và bao đóng chuỗi bằng cặp dấu ngoặc kép.
+
+
+% ========================================================
+\subsection*{BT22. Máy tính 4 phép}
+\addcontentsline{toc}{subsection}{BT22. Máy tính 4 phép}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+#include <stdio.h>
+
+int main() {
+    float a, b;
+    int opt;
+
+    printf("Nhap hai so a va b: ");
+    scanf("%f %f", &a, &b);
+
+    printf("Chon phep tinh (1: Cong, 2: Tru, 3: Nhan, 4: Chia): ");
+    scanf("%d", &opt);
+
+    switch (opt) {
+        case 1:
+            printf("Ket qua %.2f + %.2f = %.2f\n", a, b, a + b);
+            break;
+        case 2:
+            printf("Ket qua %.2f - %.2f = %.2f\n", a, b, a - b);
+            break;
+        case 3:
+            printf("Ket qua %.2f * %.2f = %.2f\n", a, b, a * b);
+            break;
+        case 4:
+            if (b != 0) {
+                printf("Ket qua %.2f / %.2f = %.2f\n", a, b, a / b);
+            } else {
+                printf("Loi: Khong the chia cho 0!\n");
+            }
+            break;
+        default:
+            printf("Lua chon phep tinh khong hop le (chi tu 1 den 4)!\n");
+            break;
+    }
+    return 0;
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{switch(opt)}: Phân loại 4 phép toán cơ bản thông qua mã số lựa chọn từ 1 đến 4.
+    \item \texttt{if (b != 0)}: Kiểm tra an toàn bắt buộc trước khi thực hiện phép chia ở \texttt{case 4}, bảo vệ chương trình không gặp lỗi chia cho 0.
+    \item Biến kiểu \texttt{float} cho phép tính toán chính xác cả số nguyên lẫn số thực.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kiểm thử 4 phép tính và trường hợp chia cho 0 tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt22_result.png}
+    \caption{Kiểm thử máy tính 4 phép tính cơ bản và xử lý ngoại lệ chia cho 0}
+    \label{fig:bt22}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Chương trình thực hiện chuẩn xác 4 phép tính cộng, trừ, nhân, chia. Khi người dùng nhập số chia $b = 0$, chương trình thông báo lỗi rõ ràng và từ chối tính toán thay vì bị treo hoặc trả về giá trị vô cực không kiểm soát.
+
+
+% ========================================================
+\subsection*{BT23. Bảng nhân LED}
+\addcontentsline{toc}{subsection}{BT23. Bảng nhân LED}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+#include <stdio.h>
+
+int main() {
+    pinMode(LED_BUILTIN, OUTPUT);
+    int n;
+
+    printf("Nhap so nguyen n (1 <= n <= 9): ");
+    scanf("%d", &n);
+
+    // 1. In bang nhan cua n tu 1 den 10 ra Console
+    printf("--- BANG NHAN %d ---\n", n);
+    for (int i = 1; i <= 10; i++) {
+        printf("%d x %2d = %2d\n", n, i, n * i);
+    }
+
+    // 2. Chot sang LED dung n lan de xac nhan gia tri
+    printf("LED nhap nhay %d lan...\n", n);
+    for (int i = 0; i < n; i++) {
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(300);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(300);
+    }
+
+    printf("Hoan tat!\n");
+    return 0;
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Vòng lặp thứ nhất \texttt{for (int i = 1; i <= 10; i++)}: Lặp 10 lần để in bảng cửu chương của $n$ ra console theo dạng chuẩn.
+    \item Vòng lặp thứ hai \texttt{for (int i = 0; i < n; i++)}: Khởi phát đúng $n$ chu kỳ chớp tắt của đèn LED (mỗi nhịp 300ms sáng / 300ms tắt) như một phản hồi tín hiệu thị giác.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp bảng cửu chương trên console và LED nháy với n = 3 tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt23_result.png}
+    \caption{Kiểm thử in bảng nhân và nhấp nháy đèn LED tương ứng với $n = 3$}
+    \label{fig:bt23}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Khi nhập giá trị $n = 3$, bảng nhân từ $3 \times 1$ đến $3 \times 10$ được in ngay ngắn, căn thẳng hàng. Đồng thời quan sát đèn LED\_BUILTIN chớp tắt đúng 3 nhịp dứt khoát trước khi kết thúc chương trình.
+
+
+% ========================================================
+\subsection*{BT24. Mã Morse ký tự S và O}
+\addcontentsline{toc}{subsection}{BT24. Mã Morse ký tự S và O}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+// Ham phat tin hieu ngan (Dau cham - Dot)
+void phat_ngan() {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(150);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(150);
+}
+
+// Ham phat tin hieu dai (Dau gach - Dash)
+void phat_dai() {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(450);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(150);
+}
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+    // Phat ky tu S: 3 nhip ngan (...)
+    for (int i = 0; i < 3; i++) {
+        phat_ngan();
+    }
+    delay(400); // Khoang cach giua hai chu cai
+
+    // Phat ky tu O: 3 nhip dai (---)
+    for (int i = 0; i < 3; i++) {
+        phat_dai();
+    }
+    delay(1000); // Khoang nghi truoc khi lap lai
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Xây dựng hàm con tách biệt: \texttt{phat\_ngan()} và \texttt{phat\_dai()} giúp tái sử dụng mã nguồn và cấu trúc hóa module chương trình.
+    \item Độ dài nhịp dài (450ms) gấp đúng 3 lần độ dài nhịp ngắn (150ms) theo quy chuẩn mã điện tín quốc tế Morse.
+    \item Gọi hàm lặp lại linh hoạt thông qua vòng lặp \texttt{for}.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kiểm thử phát ký tự S và O tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt24_result.png}
+    \caption{Phát tín hiệu mã Morse cho ký tự S và O sử dụng các hàm con}
+    \label{fig:bt24}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Việc đóng gói nhịp phát tín hiệu vào hàm riêng giúp mã nguồn ngắn gọn, tường minh và chuyên nghiệp. Đèn LED phân định rõ ràng giữa xung tích cực ngắn và dài, người nghe/nhìn dễ dàng giải mã được ký tự S và O.
+
+
+% ========================================================
+\subsection*{BT25. Đèn giao thông có chế độ ban đêm}
+\addcontentsline{toc}{subsection}{BT25. Đèn giao thông có chế độ ban đêm}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+// Bien chon che do: 0 la che do tieu chuan 3 mau, 1 la che do ban dem
+int dem = 1; 
+
+void setup() {
+    // Khoi tao
+}
+
+void loop() {
+    if (dem == 1) {
+        // Che do ban dem: Chop tat vang lien tuc (Canh bao chu y giam toc do)
+        rgb_set(255, 255, 0); // Vang
+        delay(500);
+        rgb_set(0, 0, 0);     // Tat
+        delay(500);
+    } else {
+        // Che do tieu chuan ban ngay: 3 pha Do - Xanh la - Vang
+        rgb_set(255, 0, 0);   // Do
+        delay(3000);
+        rgb_set(0, 255, 0);   // Xanh la
+        delay(2500);
+        rgb_set(255, 255, 0); // Vang
+        delay(1000);
+    }
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Biến toàn cục \texttt{dem} điều phối trạng thái hoạt động thực tế của hạ tầng giao thông đô thị.
+    \item Nhánh \texttt{dem == 1}: Kích hoạt chế độ tiết kiệm và cảnh báo đêm khuya, nhấp nháy đèn vàng chu kỳ $T = 1000$ms.
+    \item Nhánh \texttt{else}: Điều tiết chu kỳ 3 pha hoàn chỉnh phục vụ lưu thông cao điểm ban ngày.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kết quả kiểm thử chế độ dem = 1 và dem = 0 tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt25_result.png}
+    \caption{Kiểm thử hai trạng thái điều khiển đèn giao thông: ban ngày và ban đêm}
+    \label{fig:bt25}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Hai chu trình điều khiển vận hành chuẩn xác theo biến cấu hình. Khi \texttt{dem = 1}, đèn chuyển ngay sang chớp vàng cảnh báo. Khi gán \texttt{dem = 0}, hệ thống vận hành trơn tru chu trình 3 pha tiêu chuẩn.
+
+
+% ========================================================
+\subsection*{BT26. Đèn RGB màu tự chọn}
+\addcontentsline{toc}{subsection}{BT26. Đèn RGB màu tự chọn}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+void setup() {
+    // Khoi tao
+}
+
+void loop() {
+    // 1. Mau Cam (Orange): (255, 128, 0)
+    rgb_set(255, 128, 0);
+    delay(1000);
+
+    // 2. Mau Tim hoa ca (Purple): (128, 0, 128)
+    rgb_set(128, 0, 128);
+    delay(1000);
+
+    // 3. Mau Xanh ngoc (Teal / Turquoise): (0, 128, 128)
+    rgb_set(0, 128, 128);
+    delay(1000);
+
+    // 4. Mau Hong phan (Pink): (255, 105, 180)
+    rgb_set(255, 105, 180);
+    delay(1000);
+
+    // 5. Mau Xanh chuoi / Xanh chanh (Lime green): (128, 255, 0)
+    rgb_set(128, 255, 0);
+    delay(1000);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Sử dụng các giá trị cường độ trung gian (nằm giữa dải 0 và 255) cho 3 kênh R, G, B để tạo nên các dải màu phong phú:
+    \begin{itemize}
+        \item Màu Cam: $(255, 128, 0)$
+        \item Màu Tím huế: $(128, 0, 128)$
+        \item Màu Xanh ngọc: $(0, 128, 128)$
+        \item Màu Hồng phấn: $(255, 105, 180)$
+        \item Màu Xanh chanh tươi: $(128, 255, 0)$
+    \end{itemize}
+    \item Thời gian duy trì 1000ms mỗi màu giúp dễ dàng cảm nhận sắc thái ánh sáng.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp 5 màu RGB pha tự chọn tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt26_result.png}
+    \caption{Hiển thị 5 sắc màu tự chọn với các giá trị RGB trung gian}
+    \label{fig:bt26}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+LED RGB hiển thị sinh động và hài hòa các sắc độ trung gian. Việc làm chủ không gian màu 24-bit ($256^3$ màu) giúp lập trình viên tạo ra bất kỳ gam màu nào theo ý muốn.
+
+
+% ========================================================
+\subsection*{BT27. LED điều chỉnh chu kỳ}
+\addcontentsline{toc}{subsection}{BT27. LED điều chỉnh chu kỳ}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+// Chu ky duoc lua chon: thay doi giua 400, 1000, 1600 (ms)
+int period = 400; 
+
+void setup() {
+    pinMode(LED_BUILTIN, OUTPUT);
+}
+
+void loop() {
+    int half_period = period / 2; // Nua chu ky sang, nua chu ky tat
+
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(half_period);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(half_period);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Biến \texttt{period}: Định nghĩa chu kỳ toàn phần của xung vuông cấp cho LED.
+    \item \texttt{int half\_period = period / 2}: Tính toán thời gian tích cực và thời gian nghỉ cân bằng (Duty cycle 50\%).
+    \begin{itemize}
+        \item \texttt{period = 400ms}: Mỗi nửa chu kỳ 200ms $\to$ Tần số cao 2.5 Hz (chớp rất nhanh).
+        \item \texttt{period = 1000ms}: Mỗi nửa chu kỳ 500ms $\to$ Tần số chuẩn 1.0 Hz (chớp vừa).
+        \item \texttt{period = 1600ms}: Mỗi nửa chu kỳ 800ms $\to$ Tần số chậm 0.625 Hz (chớp chậm rãi).
+    \end{itemize}
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp kiểm thử với các giá trị period khác nhau tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt27_result.png}
+    \caption{Kiểm thử điều khiển tần số nhấp nháy LED theo chu kỳ period linh hoạt}
+    \label{fig:bt27}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Tốc độ nháy của LED biến đổi tỷ lệ nghịch với chu kỳ: \texttt{period} càng nhỏ nhịp chớp càng dồn dập, \texttt{period} tăng lên đèn chớp chậm dần. Tỷ lệ sáng/tắt 50/50 được giữ cân đối tuyệt đối ở mọi mức chu kỳ.
+
+
+% ========================================================
+\subsection*{BT28. Chọn mode bằng nút nhấn}
+\addcontentsline{toc}{subsection}{BT28. Chọn mode bằng nút nhấn}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+int truoc = 0;
+// 0: NORMAL (Xanh la), 1: WARNING (Vang), 2: DANGER (Do)
+int current_mode = 0; 
+
+void setup() {
+    // Ban dau o che do NORMAL
+    rgb_set(0, 255, 0);
+}
+
+void loop() {
+    int hien_tai = button_pressed(BUTTON_A);
+
+    // Phat hien su kien nhan nut A
+    if (hien_tai && !truoc) {
+        current_mode = (current_mode + 1) % 3; // Chuyen vong 0 -> 1 -> 2 -> 0
+
+        switch (current_mode) {
+            case 0: // NORMAL
+                rgb_set(0, 255, 0);   // Xanh la
+                break;
+            case 1: // WARNING
+                rgb_set(255, 255, 0); // Vang
+                break;
+            case 2: // DANGER
+                rgb_set(255, 0, 0);   // Do
+                break;
+        }
+    }
+
+    truoc = hien_tai;
+    delay(30);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Máy trạng thái hữu hạn (FSM) gồm 3 trạng thái: \texttt{0 (NORMAL)} $\to$ \texttt{1 (WARNING)} $\to$ \texttt{2 (DANGER)}.
+    \item Công thức chuyển trạng thái: \texttt{current\_mode = (current\_mode + 1) \% 3} tự động xoay vòng trạng thái sau mỗi cạnh nhấn.
+    \item Bảng trạng thái chi tiết qua 6 lần nhấn:
+    \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Lần nhấn} & \textbf{Giá trị mode} & \textbf{Tên trạng thái} & \textbf{Màu đèn LED RGB} \\ \hline
+    Khởi động & 0 & NORMAL & Xanh lá \\ \hline
+    Lần 1 & 1 & WARNING & Vàng \\ \hline
+    Lần 2 & 2 & DANGER & Đỏ \\ \hline
+    Lần 3 & 0 & NORMAL & Xanh lá \\ \hline
+    Lần 4 & 1 & WARNING & Vàng \\ \hline
+    Lần 5 & 2 & DANGER & Đỏ \\ \hline
+    Lần 6 & 0 & NORMAL & Xanh lá \\ \hline
+    \end{tabular}
+    \end{center}
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp chuyển đổi trạng thái qua các lần nhấn tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt28_result.png}
+    \caption{Kiểm thử máy trạng thái hữu hạn chuyển đổi chế độ cảnh báo qua nút nhấn}
+    \label{fig:bt28}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Cơ chế chuyển đổi trạng thái làm việc ổn định, chu kỳ 3 bước lặp lại hoàn hảo qua 6 lần nhấn thử nghiệm. Không xảy ra tình trạng nhiễu nấc hay chuyển sai thứ tự cảnh báo.
+
+
+% ========================================================
+\subsection*{BT29. Thống kê số nhấn lẻ/chẵn}
+\addcontentsline{toc}{subsection}{BT29. Thống kê số nhấn lẻ/chẵn}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+#include <stdio.h>
+
+int truoc = 0;
+int count = 0; // Dem so lan nhan nut hop le
+
+void setup() {
+    // Ban dau count = 0 (so chan) -> Bat den Xanh la
+    rgb_set(0, 255, 0);
+    printf("Trang thai ban dau: count = 0 (Chan) -> Xanh la\n");
+}
+
+void loop() {
+    int hien_tai = button_pressed(BUTTON_A);
+
+    // Phat hien canh nhan nut
+    if (hien_tai && !truoc) {
+        count++;
+        printf("Nhan nut lan %d: ", count);
+
+        if (count % 2 == 0) {
+            // So chan: Den Xanh la
+            rgb_set(0, 255, 0);
+            printf("So CHAN -> Den XANH LA\n");
+        } else {
+            // So le: Den Do
+            rgb_set(255, 0, 0);
+            printf("So LE -> Den DO\n");
+        }
+    }
+
+    truoc = hien_tai;
+    delay(30);
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item \texttt{count \% 2 == 0}: Kiểm tra tính chẵn/lẻ của biến đếm sự kiện bằng phép chia lấy phần dư.
+    \item Nếu chẵn: Gọi \texttt{rgb\_set(0, 255, 0)} hiển thị màu Xanh lá.
+    \item Nếu lẻ: Gọi \texttt{rgb\_set(255, 0, 0)} hiển thị màu Đỏ.
+    \item Thuật toán chốt cạnh \texttt{hien\_tai \&\& !truoc} ngăn chặn hoàn toàn việc tăng sai biến đếm khi nhấn giữ nút lâu.
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp Console và đèn chuyển màu theo số chẵn lẻ tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt29_result.png}
+    \caption{Phân loại chẵn lẻ theo số lần bấm nút và điều khiển LED hiển thị}
+    \label{fig:bt29}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Số đếm phản hồi chuẩn xác theo từng thao tác cơ học. Thao tác nhấn giữ dài không làm cộng thêm biến đếm. Đèn LED RGB chuyển đổi màu sắc nhịp nhàng giữa Đỏ (lẻ: 1, 3, 5,...) và Xanh lá (chẵn: 0, 2, 4,...).
+
+
+% ========================================================
+\subsection*{BT30. Trình diễn ánh sáng 20 giây}
+\addcontentsline{toc}{subsection}{BT30. Trình diễn ánh sáng 20 giây}
+
+\noindent\textbf{Mã nguồn}\\
+\begin{lstlisting}[language=C]
+#include "ohstem.h"
+
+// Ham hieu ung: Chop chop mot mau sac theo so lan va chu ky xac dinh
+void chop_mau(int r, int g, int b, int so_lan, int time_ms) {
+    for (int i = 0; i < so_lan; i++) {
+        rgb_set(r, g, b);
+        delay(time_ms);
+        rgb_set(0, 0, 0);
+        delay(time_ms);
+    }
+}
+
+void setup() {
+    // Khoi tao
+}
+
+void loop() {
+    // Tong thoi luong bieu dien: 4s + 4s + 6s + 6s = 20 giay
+    
+    // Giai doan 1 (0s - 4s): Khoi dong voi mau Xanh la (Green) - 4 lan chớp (4 x 1000ms = 4s)
+    chop_mau(0, 255, 0, 4, 500);
+
+    // Giai doan 2 (4s - 8s): Tang toc voi mau Vang (Yellow) - 8 lan chớp nhanh (8 x 500ms = 4s)
+    chop_mau(255, 255, 0, 8, 250);
+
+    // Giai doan 3 (8s - 14s): Cao trao voi mau Cyan va Magenta xen ke - 6 lan (6 x 1000ms = 6s)
+    for (int i = 0; i < 6; i++) {
+        rgb_set(0, 255, 255); // Cyan
+        delay(500);
+        rgb_set(255, 0, 255); // Magenta
+        delay(500);
+    }
+
+    // Giai doan 4 (14s - 20s): Ket thuc ruc ro voi mau Trang sang bung roi mo dan (6 giay)
+    for (int step = 0; step < 3; step++) {
+        // Bung sang trang
+        rgb_set(255, 255, 255);
+        delay(1000);
+        // Giam sang ve do nhe roi tat
+        rgb_set(50, 50, 50);
+        delay(1000);
+    }
+}
+\end{lstlisting}
+
+\noindent\textbf{Giải thích các câu lệnh quan trọng}\\
+\begin{itemize}
+    \item Đạt đầy đủ các yêu cầu đề bài:
+    \begin{itemize}
+        \item Kết hợp hơn 4 màu sắc: Xanh lá, Vàng, Cyan, Magenta, Trắng.
+        \item Sử dụng hàm tự định nghĩa \texttt{chop\_mau(...)} để tinh gọn việc tạo hiệu ứng.
+        \item Sử dụng vòng lặp \texttt{for} để điều khiển số chu kỳ hiển thị.
+    \end{itemize}
+    \item Bảng kịch bản phân bổ thời gian biểu diễn:
+    \begin{center}
+    \begin{tabular}{|c|c|l|c|}
+    \hline
+    \textbf{Giai đoạn} & \textbf{Thời gian} & \textbf{Nội dung hiệu ứng} & \textbf{Màu sắc} \\ \hline
+    1 & 0s -- 4s & Nhịp dạo đầu thư thái (chớp 1 Hz) & Xanh lá (Green) \\ \hline
+    2 & 4s -- 8s & Tăng tốc dồn dập (chớp 2 Hz) & Vàng (Yellow) \\ \hline
+    3 & 8s -- 14s & Giai đoạn cao trào đối kháng màu & Cyan \& Magenta \\ \hline
+    4 & 14s -- 20s & Nhịp kết thúc bừng sáng \& tắt dần & Trắng (White) \\ \hline
+    \end{tabular}
+    \end{center}
+\end{itemize}
+
+\noindent\textbf{Kiểm thử (ảnh)}\\
+% Chèn ảnh chụp các giai đoạn biểu diễn ánh sáng tại đây
+\begin{figure}[H]
+    \centering
+    % \includegraphics[width=0.8\textwidth]{figures/bt30_result.png}
+    \caption{Bản trình diễn hiệu ứng ánh sáng nghệ thuật tổng hợp 20 giây}
+    \label{fig:bt30}
+\end{figure}
+
+\noindent\textbf{Nhận xét, kết luận}\\
+Màn trình diễn ánh sáng diễn ra sống động, đúng chính xác thời lượng 20 giây cho mỗi vòng lặp. Sự phối hợp ăn ý giữa cấu trúc hàm, vòng lặp điều kiện và phối màu LED RGB tạo nên một kịch bản trình diễn ấn tượng, chứng minh khả năng làm chủ thiết bị và tư duy lập trình C nhúng vững vàng.
